@@ -10,8 +10,7 @@ from vdirsyncer.utils import href_safe
 from vdirsyncer.vobject import Item
 
 
-@given(uid=uid_strategy)
-@settings(perform_health_check=False)  # Using the random module for UIDs
+@given(uid=uid_strategy)  # Using the random module for UIDs
 def test_repair_uids(uid):
     s = MemoryStorage()
     s.items = {
@@ -34,8 +33,7 @@ def test_repair_uids(uid):
     assert uid1 != uid2
 
 
-@given(uid=uid_strategy.filter(lambda x: not href_safe(x)))
-@settings(perform_health_check=False)  # Using the random module for UIDs
+@given(uid=uid_strategy.filter(lambda x: not href_safe(x)))  # Using the random module for UIDs
 def test_repair_unsafe_uids(uid):
     s = MemoryStorage()
     item = Item(u'BEGIN:VCARD\nUID:{}\nEND:VCARD'.format(uid))

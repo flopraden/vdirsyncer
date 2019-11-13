@@ -69,7 +69,7 @@ class TestFilesystemStorage(StorageTests):
 
         def check_call_mock(l, *args, **kwargs):
             calls.append(True)
-            assert len(l) == 2
+            assert len(l) == 3
             assert l[0] == exe
 
         monkeypatch.setattr(subprocess, 'call', check_call_mock)

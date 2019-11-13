@@ -116,7 +116,7 @@ class FilesystemStorage(Storage):
                 raise
 
         if self.post_hook:
-            self._run_post_hook(fpath)
+            self._run_post_hook(fpath, "create")
         return href, etag
 
     def _upload_impl(self, item, href):
@@ -147,7 +147,7 @@ class FilesystemStorage(Storage):
             etag = get_etag_from_file(f)
 
         if self.post_hook:
-            self._run_post_hook(fpath)
+            self._run_post_hook(fpath, "update")
         return etag
 
     def delete(self, href, etag):
@@ -158,12 +158,15 @@ class FilesystemStorage(Storage):
         if etag != actual_etag:
             raise exceptions.WrongEtagError(etag, actual_etag)
         os.remove(fpath)
+        if self.post_hook:
+            self._run_post_hook(fpath, "delete")
+ 
 
-    def _run_post_hook(self, fpath):
-        logger.info('Calling post_hook={} with argument={}'.format(
-            self.post_hook, fpath))
+    def _run_post_hook(self, fpath, action=""):
+        logger.info('Calling post_hook={} with argument={} for action={}'.format(
+            self.post_hook, fpath, action))
         try:
-            subprocess.call([self.post_hook, fpath])
+            subprocess.call([self.post_hook, fpath, action])
         except OSError as e:
             logger.warning('Error executing external hook: {}'.format(str(e)))
 
@@ -184,3 +187,6 @@ class FilesystemStorage(Storage):
         fpath = os.path.join(self.path, key)
         with atomic_write(fpath, mode='wb', overwrite=True) as f:
             f.write(value.encode(self.encoding))
+        if self.post_hook:
+            self._run_post_hook(fpath, "metasync")
+ 
