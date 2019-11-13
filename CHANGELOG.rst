@@ -13,6 +13,7 @@ Version 0.16-dev
 ==============
 
 - Add post_hook for delete event and metadata
+- Add a second argument of post_hook : which action triggered the hook
 
 Version 0.16.7
 ==============
