@@ -158,6 +158,9 @@ class FilesystemStorage(Storage):
         if etag != actual_etag:
             raise exceptions.WrongEtagError(etag, actual_etag)
         os.remove(fpath)
+        if self.post_hook:
+            self._run_post_hook(fpath)
+ 
 
     def _run_post_hook(self, fpath):
         logger.info('Calling post_hook={} with argument={}'.format(
@@ -184,3 +187,6 @@ class FilesystemStorage(Storage):
         fpath = os.path.join(self.path, key)
         with atomic_write(fpath, mode='wb', overwrite=True) as f:
             f.write(value.encode(self.encoding))
+        if self.post_hook:
+            self._run_post_hook(fpath)
+ 

@@ -423,9 +423,9 @@ Local
         trigger a re-download of everything (but *should* not cause data-loss
         of any kind).
     :param encoding: File encoding for items, both content and filename.
-    :param post_hook: A command to call for each item creation and
-        modification. The command will be called with the path of the
-        new/updated file.
+    :param post_hook: A command to call for each item creation, modification,
+        deletion and metadata synchronisation. The command will be called with
+        the path of the new/updated file.
 
 .. storage:: singlefile
 
