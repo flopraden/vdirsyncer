@@ -237,6 +237,7 @@ class PairConfig:
         self.name_b: str = options.pop("b")
 
         self._partial_sync: str | None = options.pop("partial_sync", None)
+        self.excludes = options.pop("excludes", [])
         self.metadata = options.pop("metadata", None) or ()
 
         self.conflict_resolution = self._process_conflict_resolution_param(
@@ -251,8 +252,6 @@ class PairConfig:
                 "As of 0.9.0 this parameter has no default anymore. "
                 "Set `collections = null` explicitly in your pair config."
             )
-        else:
-            self.excludes = _validate_collections_param(self.collections)
 
         if options:
             raise ValueError("Unknown options: {}".format(", ".join(options)))
