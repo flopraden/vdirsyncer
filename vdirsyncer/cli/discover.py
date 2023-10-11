@@ -99,7 +99,7 @@ async def collections_for_pair(
     rv = await aiostream.stream.list(
         expand_collections(
             shortcuts=pair.collections,
-            blacklist=pair.blacklist,
+            excludes=pair.excludes,
             config_a=pair.config_a,
             config_b=pair.config_b,
             get_a_discovered=a_discovered.get_self,
@@ -197,7 +197,7 @@ class DiscoverResult:
 
 async def expand_collections(
     shortcuts,
-    blacklist,
+    excludes,
     config_a,
     config_b,
     get_a_discovered,
@@ -227,7 +227,7 @@ async def expand_collections(
                 continue
             elif collection[0] == "!":
                 continue
-            elif collection in blacklist:
+            elif collection in excludes:
                 continue
             handled_collections.add(collection)
 
