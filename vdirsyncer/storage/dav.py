@@ -377,6 +377,7 @@ class DAVSession:
         useragent=USERAGENT,
         verify_fingerprint=None,
         auth_cert=None,
+        ignore_missing_href=False,
         *,
         ignore_missing_href=False, 
         connector: aiohttp.BaseConnector,
