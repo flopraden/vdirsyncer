@@ -44,6 +44,7 @@ class GoogleSession(dav.DAVSession):
         client_secret,
         url=None,
         *,
+        ignore_missing_href=False, 
         connector: aiohttp.BaseConnector,
     ):
         if not have_oauth2:
@@ -62,6 +63,7 @@ class GoogleSession(dav.DAVSession):
         self._client_secret = client_secret
         self._token = None
         self._redirect_uri = None
+        self.ignore_missing_href = ignore_missing_href
 
     async def request(self, method, path, **kwargs):
         if not self._token:
