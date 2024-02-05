@@ -380,7 +380,6 @@ class DAVSession:
         *,
         ignore_missing_href=False, 
         connector: aiohttp.BaseConnector,
-        ignore_missing_href=False,
     ):
 
         self._settings = {
