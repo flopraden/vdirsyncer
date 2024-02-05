@@ -470,11 +470,12 @@ class DAVStorage(Storage):
         self.username = kwargs.get("username")
         self.url = kwargs.get("url")
         self.connector = connector
-
+        print(kwargs)
         self.session, kwargs = self.session_class.init_and_remaining_args(
             connector=connector,
             **kwargs,
         )
+        print(kwargs)
         super().__init__(**kwargs)
 
     __init__.__signature__ = signature(session_class.__init__)  # type: ignore
@@ -516,7 +517,8 @@ class DAVStorage(Storage):
         href_xml = []
         for href in hrefs:
             if href != self._normalize_href(href):
-                raise exceptions.NotFoundError(href)
+                if not self.session.ignore_missing_href:
+                    raise exceptions.NotFoundError(href)
             href_xml.append(f"<href>{href}</href>")
         if href_xml:
             data = self.get_multi_template.format(hrefs="\n".join(href_xml)).encode(
