@@ -397,7 +397,7 @@ class DAVSession:
         self.url = url.rstrip("/") + "/"
         self.connector = connector
         self.ignore_missing_href = ignore_missing_href
-
+        dav_logger.debug(f"Init DAVSession : Args ignore lissing ref: {self.ignore_missing_href!s} / {ignore_missing_href!s}")
     @utils.cached_property
     def parsed_url(self):
         return urlparse.urlparse(self.url)
@@ -470,12 +470,12 @@ class DAVStorage(Storage):
         self.username = kwargs.get("username")
         self.url = kwargs.get("url")
         self.connector = connector
-        print(kwargs)
+        dav_logger.debug(f"Init DAVStorage : Args before : {kwargs!s}")
         self.session, kwargs = self.session_class.init_and_remaining_args(
             connector=connector,
             **kwargs,
         )
-        print(kwargs)
+        dav_logger.debug(f"Init DAVStorage : Args after : {kwargs!s}")
         super().__init__(**kwargs)
 
     __init__.__signature__ = signature(session_class.__init__)  # type: ignore
