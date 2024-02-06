@@ -470,10 +470,12 @@ class DAVStorage(Storage):
         self.username = kwargs.get("username")
         self.url = kwargs.get("url")
         self.connector = connector
+        dav_logger.debug(f"Init DAVStorage : Args before : {kwargs!s}")
         self.session, kwargs = self.session_class.init_and_remaining_args(
             connector=connector,
             **kwargs,
         )
+        dav_logger.debug(f"Init DAVStorage : Args after : {kwargs!s}")
         super().__init__(**kwargs)
 
     __init__.__signature__ = signature(session_class.__init__)  # type: ignore
